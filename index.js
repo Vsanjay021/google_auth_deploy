@@ -23,14 +23,14 @@ mongoose.connect('mongoURI=mongodb+srv://sanjayv:sanjay@cluster0.9ycsbw8.mongodb
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
-app.use(cors({ origin: "http://localhost:3000", credentials: true }))
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: "GET,POST,PUT,DELETE",
+//     credentials: true,
+//   })
+// );
+app.use(cors({ "origin": "*" }))
 
 app.set("trust proxy", 1);
 
@@ -82,13 +82,26 @@ app.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'em
 //     failureRedirect: "/auth/login/failed",
 //   })
 // );
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3000', session: true }),
-  function (req, res) {
-    res.redirect('http://localhost:3000/userdashboard');
+// app.get('/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: 'http://localhost:3000', session: true }),
+//   function (req, res) {
+//     res.redirect('http://localhost:3000/userdashboard');
+//   });
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+      successRedirect: "http://localhost:3000/userdashboard",
+      failureRedirect: "/auth/login/failed",
+    })
+  );
+  app.get("/auth/login/failed", (req, res) => {
+    res.status(401).json({
+      success: false,
+      message: "failure",
+    });
   });
-
-
+  
 
 app.get("/", (req, res) => {
   res.send("Helllo WOlrd");
