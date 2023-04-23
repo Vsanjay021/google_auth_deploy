@@ -23,13 +23,13 @@ mongoose.connect('mongoURI=mongodb+srv://sanjayv:sanjay@cluster0.9ycsbw8.mongodb
 
 // Middleware
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     methods: "GET,POST,PUT,DELETE",
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 
 app.set("trust proxy", 1);
